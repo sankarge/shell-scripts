@@ -1,0 +1,7 @@
+echo "      date     time $(free -m | grep total)"
+
+while true
+do
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $(free -m | grep Mem: | sed 's/Mem://g')"
+    sleep 30
+done

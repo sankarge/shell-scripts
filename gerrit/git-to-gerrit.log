@@ -1,0 +1,11 @@
+Thu Jul 12 18:40:21 IST 2018: 1. Started migrating jenkins-jobs to ANALYTICS/na/legacy/jenkins-jobs
+Thu Jul 12 18:40:21 IST 2018: 2. Cloing bare repo of jenkins-jobs
+Cloning into bare repository 'jenkins-jobs'...
+Thu Jul 12 18:40:26 IST 2018: 3. Mirroing Git repo jenkins-jobs
+Thu Jul 12 18:40:49 IST 2018: 4. Cloning from gerrit ANALYTICS/na/legacy/jenkins-jobs
+Cloning into 'jenkins-jobs'...
+Thu Jul 12 18:40:58 IST 2018: 5. Successfully migrated jenkins-jobs to ANALYTICS/na/legacy/jenkins-jobs
+
+Thu Jul 12 18:40:58 IST 2018: 1. Started migrating naaas-hackathon to ANALYTICS/na/legacy/naaas-hackathon
+Thu Jul 12 18:40:58 IST 2018: 2. Cloing bare repo of naaas-hackathon
+Cloning into bare repository 'naaas-hackathon'...

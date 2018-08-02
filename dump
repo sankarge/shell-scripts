@@ -1,0 +1,43 @@
+#!/bin/bash
+. ~/.bashrc
+
+display_usage() {
+	echo "Usage: ./dump.sh [ip] [verison]"
+	echo "Example: dump 45 92" 
+	}
+
+if [  $# -le 1 ] 
+    then 
+	display_usage
+	exit 0
+fi
+
+ip=$1
+version=$2
+
+echo "taking dump on $ip .."
+ssh na@172.21.218.$1 'mysqldump -uroot -pmysql -S/var/opt/na/mysql-1/mysql.sock naf > naf.sql && mysqldump -uroot -pmysql -S/var/opt/na/mysql-1/mysql.sock sbi > sbi.sql && mysqldump -uroot -pmysql -S/var/opt/na/mysql-1/mysql.sock naf15traffic > naf15traffic.sql'
+
+echo "Copying dump locally.."
+scp na@172.21.218.$1:/opt/na/*.sql /udir/$USER/util/dbdump/
+
+echo "Deleting and re-creating databases for version" $version
+mysql -uroot -pmysql -e "DROP DATABASE naf_$version"
+mysql -uroot -pmysql -e  "DROP DATABASE sbi_$version"
+mysql -uroot -pmysql -e "DROP DATABASE naf15traffic_$version"
+
+mysql -uroot -pmysql -e "CREATE DATABASE naf_$version"
+mysql -uroot -pmysql -e "CREATE DATABASE sbi_$version"
+mysql -uroot -pmysql -e "CREATE DATABASE naf15traffic_$version"
+
+echo "Restoring dump.."
+mysql -uroot -pmysql naf_$version < /udir/$USER/util/dbdump/naf.sql
+mysql -uroot -pmysql sbi_$version < /udir/$USER/util/dbdump/sbi.sql
+mysql -uroot -pmysql naf15traffic_$version < /udir/$USER/util/dbdump/naf15traffic.sql
+
+echo "Applying license.."
+license $version
+
+echo "Verification step.."
+mysql -uroot -pmysql naf_$version -e " select * from NI_PROPERTY;"
+

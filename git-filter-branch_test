@@ -1,0 +1,17 @@
+for f in "commons"
+	do 
+		echo ""
+		echo "Creating bare repo from "$f
+
+		git clone --mirror git-na@git-1.be.alcatel-lucent.com:/$f $f
+
+		echo ""
+		echo "Re-writing commit id's via git-filter-branch to add parent directory" $f
+
+		cd $f
+		ls
+
+	done
+
+
+

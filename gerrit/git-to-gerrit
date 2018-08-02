@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+bare=/udir/sankarge/migration/bare
+verify=/udir/sankarge/migration/verify
+
+migrate()
+{
+    cd $bare
+    echo `date`: 1. Started migrating $1 to $2
+    echo `date`: 2. Cloing bare repo of $1
+    rm -rf $1
+    git clone --bare git-na@git-1.be.alcatel-lucent.com:/$1 $1
+
+    cd $1
+    echo `date`: 3. Mirroing Git repo $1
+
+    git remote add gerrit ssh://sankarge@gerrit.ext.net.nokia.com:29418/$2	
+    git push --mirror gerrit
+
+
+    cd $verify
+    rm -rf $1
+    echo `date`: 4. Cloning from gerrit $2
+    git clone ssh://sankarge@gerrit.ext.net.nokia.com:29418/$2
+    echo `date`: 5. Successfully migrated $1 to $2
+    echo 	
+}
+
+for f in `cat input.csv`
+    do
+	git=`echo $f | cut -d',' -f 1`
+	gerrit=`echo $f | cut -d',' -f 2`
+	migrate $git $gerrit 
+    done
+
+
+

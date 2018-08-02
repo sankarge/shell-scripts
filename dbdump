@@ -1,0 +1,36 @@
+#!/bin/bash
+
+display_usage() {
+        echo "Usage: ./dbdump.sh [VERSION] [DATABASE]"
+	echo "Example: ./dbdump.sh 91 sdc" 
+        }
+
+# if less than two arguments supplied, display usage 
+	if [  $# -le 1 ] 
+	then 
+		display_usage
+		exit 1
+	fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+	if [[ ( $# == "--help") ||  $# == "-h" ]] 
+	then 
+		display_usage
+		exit 0
+	fi 
+
+#CONSTANTS
+DATE=`date +%F`
+DIR=/udir/sankarge/util/dbdump/$1/
+FILE="$DIR$DATE"
+#echo $FILE
+
+#COMMAND
+mkdir -p "$FILE"
+RESULT_FILE="$FILE/$2_$1.sql"
+mysqldump -uroot -pmysql "$2_$1" > $RESULT_FILE
+
+if [ -f $RESULT_FILE ]
+then
+echo Dump Created $RESULT_FILE
+fi
